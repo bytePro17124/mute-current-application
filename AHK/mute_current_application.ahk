@@ -1,7 +1,7 @@
 ; #Include E:\ahk\VA.ahk
 #Include VA.ahk
 
-F1::  ; F1 hotkey - toggle mute state of active window
++F1::  ; Shift+F1 hotkey - toggle mute state of active window
   WinGet, ActivePid, PID, A
   if !(Volume := GetVolumeObject(ActivePid))
     MsgBox, There was a problem retrieving the application volume interface
@@ -10,6 +10,23 @@ F1::  ; F1 hotkey - toggle mute state of active window
   VA_ISimpleAudioVolume_SetMute(Volume, !Mute) ;Toggle mute state
   ObjRelease(Volume)
 return
+
+
++F2::  ; Shift+F2 hotkey - turn off audio for 2 minutes (perfect for queueing up for PUBG)
+  WinGet, ActivePid, PID, A
+  if !(Volume := GetVolumeObject(ActivePid))
+    MsgBox, There was a problem retrieving the application volume interface
+  VA_ISimpleAudioVolume_GetMute(Volume, Mute)  ;Get mute state
+  VA_ISimpleAudioVolume_SetMute(Volume, !Mute) ;Toggle mute state
+
+  sleep 120000   ;wait 2 minutes
+  
+  VA_ISimpleAudioVolume_SetMute(Volume, Mute) ;Toggle mute state
+  
+  ObjRelease(Volume)
+
+return
+
 
 ;Required for app specific mute
 GetVolumeObject(Param = 0)
